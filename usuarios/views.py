@@ -1,27 +1,37 @@
 from django.shortcuts import render, redirect
-from .models import Usuario
-from .forms import LoginForm
+from django.contrib.auth.hashers import check_password
+from usuarios.models import Usuario
 
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            senha = form.cleaned_data['senha']
-            try:
-                usuario = Usuario.objects.get(username=username)
-                if usuario.check_password(senha) and usuario.status_ativo:
-                    # Salvar informações do usuário na sessão
-                    request.session['usuario_id'] = usuario.cod_usuario
-                    request.session['usuario_nome'] = usuario.nome
-                    return redirect('home')  # Altere para sua rota de sucesso
-                else:
-                    form.add_error(None, "Credenciais inválidas ou usuário inativo.")
-            except Usuario.DoesNotExist:
-                form.add_error(None, "Usuário não encontrado.")
-    else:
-        form = LoginForm()
-    return render(request, 'usuarios/login.html', {'form': form})
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            # Busca o usuário pelo username
+            user = Usuario.objects.get(username=username)
+
+            # Verifica se a senha informada corresponde à senha criptografada
+            if check_password(password, user.senha):
+                # Salva informações do usuário na sessão
+                request.session['usuario_id'] = user.cod_usuario
+                request.session['usuario_nome'] = user.nome
+
+                # Redireciona para a página inicial após login bem-sucedido
+                return redirect('home')
+            else:
+                return render(request, 'usuarios/login.html', {'error': 'Usuário ou senha inválidos'})
+
+        except Usuario.DoesNotExist:
+            # Retorna mensagem de erro se o usuário não for encontrado
+            return render(request, 'usuarios/login.html', {'error': 'Usuário ou senha inválidos'})
+
+    # Exibe a página de login caso seja um GET
+    return render(request, 'usuarios/login.html')
+
+
+
+
 
 
 from django.shortcuts import render, redirect
