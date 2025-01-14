@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excluir Grupo</title>
+</head>
+<body>
+    <h1>Excluir Grupo: {{ grupo.nome_grupo }}</h1>
+    <p>Tem certeza que deseja excluir este grupo?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Excluir</button>
+    </form>
+    <a href="{% url 'home' %}">Cancelar</a>
+</body>
+</html>

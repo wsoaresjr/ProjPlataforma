@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bem-vindo</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ usuario_nome }}</h1>
+    <p>Você pertence aos seguintes grupos:</p>
+    <ul>
+        {% for grupo in grupos %}
+            <li>{{ grupo }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if is_admin %}
+        <h2>Opções Administrativas</h2>
+
+        <!-- Gerenciar Usuários -->
+        <h3>Gerenciar Usuários</h3>
+        <form action="{% url 'cadastrar_usuario' %}" method="get" style="display: inline;">
+            <button type="submit">Cadastrar Usuário</button>
+        </form>
+        <h3>Lista de Usuários</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.cod_usuario }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <form action="{% url 'editar_usuario' usuario.cod_usuario %}" method="get" style="display: inline;">
+                            <button type="submit">Editar</button>
+                        </form>
+                        <form action="{% url 'excluir_usuario' usuario.cod_usuario %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <!-- Gerenciar Grupos -->
+        <h2>Gerenciar Grupos</h2>
+        <form action="{% url 'cadastrar_grupo' %}" method="get" style="display: inline;">
+            <button type="submit">Cadastrar Grupo</button>
+        </form>
+        <h3>Lista de Grupos</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grupo in grupos_lista %}
+                <tr>
+                    <td>{{ grupo.cod_grupo }}</td>
+                    <td>{{ grupo.nome_grupo }}</td>
+                    <td>{{ grupo.descricao }}</td>
+                    <td>
+                        <form action="{% url 'editar_grupo' grupo.cod_grupo %}" method="get" style="display: inline;">
+                            <button type="submit">Editar</button>
+                        </form>
+                        <form action="{% url 'excluir_grupo' grupo.cod_grupo %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este grupo?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Gerenciar Associações -->
+        <h2>Gerenciar Associações</h2>
+        <form action="{% url 'associar_usuario_grupo' %}" method="get" style="display: inline;">
+            <button type="submit">Associar Usuário a Grupo</button>
+        </form>
+        <h3>Lista de Associações</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Grupo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for associacao in associacoes %}
+                <tr>
+                    <td>{{ associacao.usuario.nome }}</td>
+                    <td>{{ associacao.grupo.nome_grupo }}</td>
+                    <td>
+                        <form action="{% url 'editar_associacao' associacao.id %}" method="get" style="display: inline;">
+                            <button type="submit">Editar</button>
+                        </form>
+                        <form action="{% url 'excluir_associacao' associacao.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta associação?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+    </form>
+</body>
+</html>

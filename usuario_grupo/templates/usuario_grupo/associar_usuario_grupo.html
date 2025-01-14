@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Associar Usuário a Grupo</title>
+</head>
+<body>
+    <h1>Associar Usuário a Grupo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>

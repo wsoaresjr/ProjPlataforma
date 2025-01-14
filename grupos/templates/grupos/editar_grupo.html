@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Grupo</title>
+</head>
+<body>
+    <h1>Editar Grupo: {{ grupo.nome_grupo }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>
