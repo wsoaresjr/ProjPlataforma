@@ -43,7 +43,10 @@ from disciplinas.models import Disciplina
 from ensinos.models import Ensino
 from etapas.models import Etapa
 from descritores.models import Descritor
-
+from tipo_item.models import TipoItem
+from padrao_item.models import PadraoItem
+from programas.models import Programa
+from subprogramas.models import Subprograma
 
 def home_view(request):
     # Verificar se o usuário está autenticado
@@ -67,6 +70,10 @@ def home_view(request):
     ensinos = Ensino.objects.all() if is_admin else None
     etapas = Etapa.objects.all() if is_admin else None
     descritores = Descritor.objects.all() if is_admin else None
+    tipos_item = TipoItem.objects.all() if is_admin else None
+    padroes_item = PadraoItem.objects.all() if is_admin else None
+    programas = Programa.objects.all() if is_admin else None
+    subprogramas = Subprograma.objects.all() if is_admin else None
 
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
@@ -80,6 +87,10 @@ def home_view(request):
         'ensinos': ensinos,
         'etapas': etapas,
         'descritores': descritores,
+        'tipos_item': tipos_item,
+        'padroes_item': padroes_item,
+        'programas': programas,
+        'subprogramas': subprogramas,
     })
 
 

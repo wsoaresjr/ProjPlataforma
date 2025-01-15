@@ -307,6 +307,178 @@
             {% endfor %}
         </tbody>
     </table>
+    <!-- Gerenciar Tipos de Item -->
+    <h2>Gerenciar Tipos de Item</h2>
+    <form action="{% url 'cadastrar_tipo_item' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Tipo de Item</button>
+    </form>
+    <h3>Lista dos Tipos de Item</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tipo de Item</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tipo_item in tipos_item %}
+            <tr>
+                <td>{{ tipo_item.cod_tipo_item }}</td>
+                <td>{{ tipo_item.tipo_item }}</td>
+                <td>
+                    <form action="{% url 'editar_tipo_item' tipo_item.cod_tipo_item %}" method="get"
+                        style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_tipo_item' tipo_item.cod_tipo_item %}" method="post"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este tipo de item?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Padrões de Item -->
+    <h2>Gerenciar Padrões de Item</h2>
+    <form action="{% url 'cadastrar_padrao_item' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Padrão de Item</button>
+    </form>
+    <h3>Lista dos Padrões de Item</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Padrão de Item</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for padrao_item in padroes_item %}
+            <tr>
+                <td>{{ padrao_item.cod_padrao_item }}</td>
+                <td>{{ padrao_item.padrao_item }}</td>
+                <td>
+                    <form action="{% url 'editar_padrao_item' padrao_item.cod_padrao_item %}" method="get"
+                        style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_padrao_item' padrao_item.cod_padrao_item %}" method="post"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este padrão de item?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Programas -->
+    <h2>Gerenciar Programas</h2>
+    <form action="{% url 'cadastrar_programa' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Programa</button>
+    </form>
+    <h3>Lista dos Programas</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Programa</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Contato</th>
+                <th>Qtd Testes</th>
+                <th>Contrato Assinado</th>
+                <th>Arquivo Contrato</th>
+                <th>Observações</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for programa in programas %}
+            <tr>
+                <td>{{ programa.cod_programa }}</td>
+                <td>{{ programa.programa }}</td>
+                <td>{{ programa.data_inicio }}</td>
+                <td>{{ programa.data_fim }}</td>
+                <td>{{ programa.nome_contato }}</td>
+                <td>{{ programa.qtd_testes }}</td>
+                <td>{{ programa.contrato_assinado|yesno:"Sim,Não" }}</td>
+                <td>
+                    {% if programa.arquivo_contrato %}
+                    <a href="{{ programa.arquivo_contrato.url }}" target="_blank">Download</a>
+                    {% else %}
+                    Não disponível
+                    {% endif %}
+                </td>
+                <td>{{ programa.observacoes }}</td>
+                <td>
+                    <form action="{% url 'editar_programa' programa.cod_programa %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_programa' programa.cod_programa %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este programa?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Gerenciar Subprogramas -->
+    <h2>Gerenciar Subprogramas</h2>
+    <form action="{% url 'cadastrar_subprograma' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Subprograma</button>
+    </form>
+    <h3>Lista dos Subprogramas</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Subprograma</th>
+                <th>Data Aplicação</th>
+                <th>Qtd Itens</th>
+                <th>Tipo Item</th>
+                <th>Padrão Item</th>
+                <th>Disciplinas Avaliadas</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subprograma in subprogramas %}
+            <tr>
+                <td>{{ subprograma.cod_subprograma }}</td>
+                <td>{{ subprograma.subprograma }}</td>
+                <td>{{ subprograma.data_aplicacao }}</td>
+                <td>{{ subprograma.qtd_itens }}</td>
+                <td>{{ subprograma.tipo_item.tipo_item }}</td>
+                <td>{{ subprograma.padrao_item.padrao_item }}</td>
+                <td>
+                    {% for disciplina in subprograma.disciplinas_avaliadas.all %}
+                        {{ disciplina.disciplina }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <form action="{% url 'editar_subprograma' subprograma.cod_subprograma %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_subprograma' subprograma.cod_subprograma %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este subprograma?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+
 
 
 

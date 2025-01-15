@@ -1,0 +1,7 @@
+<h1>Editar Programa: {{ programa.programa }}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar Alterações</button>
+</form>
+<a href="{% url 'listar_programas' %}">Voltar</a>

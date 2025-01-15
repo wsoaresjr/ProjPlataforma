@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Padrões de Item</title>
+</head>
+<body>
+    <h1>Lista de Padrões de Item</h1>
+    <!-- Botão para Cadastrar Padrão de Item -->
+    <form action="{% url 'cadastrar_padrao_item' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Padrão de Item</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Padrão de Item</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for padrao_item in padroes_item %}
+            <tr>
+                <td>{{ padrao_item.cod_padrao_item }}</td>
+                <td>{{ padrao_item.padrao_item }}</td>
+                <td>
+                    <!-- Botão para Editar -->
+                    <form action="{% url 'editar_padrao_item' padrao_item.cod_padrao_item %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <!-- Botão para Excluir -->
+                    <form action="{% url 'excluir_padrao_item' padrao_item.cod_padrao_item %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este padrão de item?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Botão para Voltar à Home -->
+    <form action="{% url 'home' %}" method="get" style="display: inline;">
+        <button type="submit">Voltar</button>
+    </form>
+</body>
+</html>

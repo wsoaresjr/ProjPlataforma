@@ -1,0 +1,7 @@
+<h1>Excluir Padrão de Item</h1>
+<p>Tem certeza que deseja excluir o padrão de item "{{ padrao_item.padrao_item }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, excluir</button>
+</form>
+<a href="{% url 'listar_padroes_item' %}">Cancelar</a>

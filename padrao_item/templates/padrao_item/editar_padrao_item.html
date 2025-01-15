@@ -1,0 +1,7 @@
+<h1>Editar Padrão de Item: {{ padrao_item.padrao_item }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar Alterações</button>
+</form>
+<a href="{% url 'listar_padroes_item' %}">Voltar</a>

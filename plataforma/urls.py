@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.urls import path, include
 from usuarios.views import login_view, home_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -30,4 +32,9 @@ urlpatterns = [
     path('ensinos/', include('ensinos.urls')),
     path('etapas/', include('etapas.urls')),
     path('descritores/', include('descritores.urls')),
-]
+    path('tipo_item/', include('tipo_item.urls')),
+    path('padrao_item/', include('padrao_item.urls')),
+    path('programas/', include('programas.urls')),
+    path('subprogramas/', include('subprogramas.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

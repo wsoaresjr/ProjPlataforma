@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Programas</title>
+</head>
+<body>
+    <h1>Lista de Programas</h1>
+    <!-- Botão para Cadastrar Programa -->
+    <form action="{% url 'cadastrar_programa' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Programa</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Programa</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Nome Contato</th>
+                <th>Telefone Contato</th>
+                <th>Email Contato</th>
+                <th>Qtd Testes</th>
+                <th>Contrato Assinado</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for programa in programas %}
+            <tr>
+                <td>{{ programa.cod_programa }}</td>
+                <td>{{ programa.programa }}</td>
+                <td>{{ programa.data_inicio }}</td>
+                <td>{{ programa.data_fim }}</td>
+                <td>{{ programa.nome_contato }}</td>
+                <td>{{ programa.telefone_contato }}</td>
+                <td>{{ programa.email_contato }}</td>
+                <td>{{ programa.qtd_testes }}</td>
+                <td>{{ programa.contrato_assinado|yesno:"Sim,Não" }}</td>
+                <td>
+                    <!-- Botão para Editar -->
+                    <form action="{% url 'editar_programa' programa.cod_programa %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <!-- Botão para Excluir -->
+                    <form action="{% url 'excluir_programa' programa.cod_programa %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este programa?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Botão para Voltar à Home -->
+    <form action="{% url 'home' %}" method="get" style="display: inline;">
+        <button type="submit">Voltar</button>
+    </form>
+</body>
+</html>
