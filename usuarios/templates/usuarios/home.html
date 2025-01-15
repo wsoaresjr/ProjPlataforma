@@ -1,157 +1,315 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Bem-vindo</title>
 </head>
+
 <body>
     <h1>Bem-vindo, {{ usuario_nome }}</h1>
     <p>Você pertence aos seguintes grupos:</p>
     <ul>
         {% for grupo in grupos %}
-            <li>{{ grupo }}</li>
+        <li>{{ grupo }}</li>
         {% endfor %}
     </ul>
 
     {% if is_admin %}
-        <h2>Opções Administrativas</h2>
+    <h2>Opções Administrativas</h2>
 
-        <!-- Gerenciar Usuários -->
-        <h3>Gerenciar Usuários</h3>
-        <form action="{% url 'cadastrar_usuario' %}" method="get" style="display: inline;">
-            <button type="submit">Cadastrar Usuário</button>
-        </form>
-        <h3>Lista de Usuários</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for usuario in usuarios %}
-                <tr>
-                    <td>{{ usuario.cod_usuario }}</td>
-                    <td>{{ usuario.nome }}</td>
-                    <td>{{ usuario.username }}</td>
-                    <td>{{ usuario.email }}</td>
-                    <td>
-                        <form action="{% url 'editar_usuario' usuario.cod_usuario %}" method="get" style="display: inline;">
-                            <button type="submit">Editar</button>
-                        </form>
-                        <form action="{% url 'excluir_usuario' usuario.cod_usuario %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Gerenciar Usuários -->
+    <h3>Gerenciar Usuários</h3>
+    <form action="{% url 'cadastrar_usuario' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Usuário</button>
+    </form>
+    <h3>Lista de Usuários</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.cod_usuario }}</td>
+                <td>{{ usuario.nome }}</td>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    <form action="{% url 'editar_usuario' usuario.cod_usuario %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_usuario' usuario.cod_usuario %}" method="post"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <!-- Gerenciar Grupos -->
-        <h2>Gerenciar Grupos</h2>
-        <form action="{% url 'cadastrar_grupo' %}" method="get" style="display: inline;">
-            <button type="submit">Cadastrar Grupo</button>
-        </form>
-        <h3>Lista de Grupos</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for grupo in grupos_lista %}
-                <tr>
-                    <td>{{ grupo.cod_grupo }}</td>
-                    <td>{{ grupo.nome_grupo }}</td>
-                    <td>{{ grupo.descricao }}</td>
-                    <td>
-                        <form action="{% url 'editar_grupo' grupo.cod_grupo %}" method="get" style="display: inline;">
-                            <button type="submit">Editar</button>
-                        </form>
-                        <form action="{% url 'excluir_grupo' grupo.cod_grupo %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este grupo?')">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Gerenciar Grupos -->
+    <h2>Gerenciar Grupos</h2>
+    <form action="{% url 'cadastrar_grupo' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Grupo</button>
+    </form>
+    <h3>Lista de Grupos</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grupo in grupos_lista %}
+            <tr>
+                <td>{{ grupo.cod_grupo }}</td>
+                <td>{{ grupo.nome_grupo }}</td>
+                <td>{{ grupo.descricao }}</td>
+                <td>
+                    <form action="{% url 'editar_grupo' grupo.cod_grupo %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_grupo' grupo.cod_grupo %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este grupo?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <!-- Gerenciar Associações -->
-        <h2>Gerenciar Associações</h2>
-        <form action="{% url 'associar_usuario_grupo' %}" method="get" style="display: inline;">
-            <button type="submit">Associar Usuário a Grupo</button>
-        </form>
-        <h3>Lista de Associações</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Usuário</th>
-                    <th>Grupo</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for associacao in associacoes %}
-                <tr>
-                    <td>{{ associacao.usuario.nome }}</td>
-                    <td>{{ associacao.grupo.nome_grupo }}</td>
-                    <td>
-                        <form action="{% url 'editar_associacao' associacao.id %}" method="get" style="display: inline;">
-                            <button type="submit">Editar</button>
-                        </form>
-                        <form action="{% url 'excluir_associacao' associacao.id %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta associação?')">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Gerenciar Associações -->
+    <h2>Gerenciar Associações</h2>
+    <form action="{% url 'associar_usuario_grupo' %}" method="get" style="display: inline;">
+        <button type="submit">Associar Usuário a Grupo</button>
+    </form>
+    <h3>Lista de Associações</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Usuário</th>
+                <th>Grupo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for associacao in associacoes %}
+            <tr>
+                <td>{{ associacao.usuario.nome }}</td>
+                <td>{{ associacao.grupo.nome_grupo }}</td>
+                <td>
+                    <form action="{% url 'editar_associacao' associacao.id %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_associacao' associacao.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir esta associação?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <!-- Gerenciar Anos -->
-        <h2>Gerenciar Anos</h2>
-        <form action="{% url 'cadastrar_ano' %}" method="get" style="display: inline;">
-            <button type="submit">Cadastrar Ano</button>
-        </form>
-        <h3>Lista dos Anos</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Ano</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for ano in anos %}
-                <tr>
-                    <td>{{ ano.cod_ano }}</td>
-                    <td>{{ ano.ano }}</td>
-                    <td>
-                        <form action="{% url 'editar_ano' ano.cod_ano %}" method="get" style="display: inline;">
-                            <button type="submit">Editar</button>
-                        </form>
-                        <form action="{% url 'excluir_ano' ano.cod_ano %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este ano?')">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Gerenciar Anos -->
+    <h2>Gerenciar Anos</h2>
+    <form action="{% url 'cadastrar_ano' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Ano</button>
+    </form>
+    <h3>Lista dos Anos</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Ano</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ano in anos %}
+            <tr>
+                <td>{{ ano.cod_ano }}</td>
+                <td>{{ ano.ano }}</td>
+                <td>
+                    <form action="{% url 'editar_ano' ano.cod_ano %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_ano' ano.cod_ano %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este ano?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Disciplinas -->
+    <h2>Gerenciar Disciplinas</h2>
+    <form action="{% url 'cadastrar_disciplina' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Disciplina</button>
+    </form>
+    <h3>Lista das Disciplinas</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Disciplina</th>
+                <th>Sigla</th>
+                <th>Área de Conhecimento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for disciplina in disciplinas %}
+            <tr>
+                <td>{{ disciplina.cod_disciplina }}</td>
+                <td>{{ disciplina.disciplina }}</td>
+                <td>{{ disciplina.sigla }}</td>
+                <td>{{ disciplina.area_conhecimento }}</td>
+                <td>
+                    <form action="{% url 'editar_disciplina' disciplina.cod_disciplina %}" method="get"
+                        style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_disciplina' disciplina.cod_disciplina %}" method="post"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir esta disciplina?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Ensinos -->
+    <h2>Gerenciar Ensinos</h2>
+    <form action="{% url 'cadastrar_ensino' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Ensino</button>
+    </form>
+    <h3>Lista dos Ensinos</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Ensino</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ensino in ensinos %}
+            <tr>
+                <td>{{ ensino.cod_ensino }}</td>
+                <td>{{ ensino.ensino }}</td>
+                <td>
+                    <form action="{% url 'editar_ensino' ensino.cod_ensino %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_ensino' ensino.cod_ensino %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este ensino?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Etapas -->
+    <h2>Gerenciar Etapas</h2>
+    <form action="{% url 'cadastrar_etapa' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Etapa</button>
+    </form>
+    <h3>Lista das Etapas</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Etapa</th>
+                <th>Ensino</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etapa in etapas %}
+            <tr>
+                <td>{{ etapa.cod_etapa }}</td>
+                <td>{{ etapa.etapa }}</td>
+                <td>{{ etapa.ensino.ensino }}</td>
+                <td>
+                    <form action="{% url 'editar_etapa' etapa.cod_etapa %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_etapa' etapa.cod_etapa %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir esta etapa?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Gerenciar Descritores -->
+    <h2>Gerenciar Descritores</h2>
+    <form action="{% url 'cadastrar_descritor' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Descritor</button>
+    </form>
+    <h3>Lista dos Descritores</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descritor</th>
+                <th>Código Eixo</th>
+                <th>Eixo</th>
+                <th>Disciplina</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for descritor in descritores %}
+            <tr>
+                <td>{{ descritor.cod_descritor }}</td>
+                <td>{{ descritor.descritor }}</td>
+                <td>{{ descritor.cod_eixo }}</td>
+                <td>{{ descritor.eixo }}</td>
+                <td>{{ descritor.disciplina.disciplina }}</td>
+                <td>
+                    <form action="{% url 'editar_descritor' descritor.cod_descritor %}" method="get"
+                        style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_descritor' descritor.cod_descritor %}" method="post"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este descritor?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
     {% endif %}
 
     <form method="post" action="{% url 'logout' %}">
@@ -159,4 +317,5 @@
         <button type="submit">Sair</button>
     </form>
 </body>
+
 </html>

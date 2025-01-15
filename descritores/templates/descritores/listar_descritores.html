@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Descritores</title>
+</head>
+<body>
+    <h1>Lista de Descritores</h1>
+    <!-- Botão para Cadastrar Descritor -->
+    <form action="{% url 'cadastrar_descritor' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Descritor</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descritor</th>
+                <th>Código Eixo</th>
+                <th>Eixo</th>
+                <th>Disciplina</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for descritor in descritores %}
+            <tr>
+                <td>{{ descritor.cod_descritor }}</td>
+                <td>{{ descritor.descritor }}</td>
+                <td>{{ descritor.cod_eixo }}</td>
+                <td>{{ descritor.eixo }}</td>
+                <td>{{ descritor.disciplina.disciplina }}</td>
+                <td>
+                    <!-- Botão para Editar -->
+                    <form action="{% url 'editar_descritor' descritor.cod_descritor %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <!-- Botão para Excluir -->
+                    <form action="{% url 'excluir_descritor' descritor.cod_descritor %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este descritor?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Botão para Voltar à Home -->
+    <form action="{% url 'home' %}" method="get" style="display: inline;">
+        <button type="submit">Voltar</button>
+    </form>
+</body>
+</html>

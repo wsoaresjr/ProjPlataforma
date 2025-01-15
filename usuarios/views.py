@@ -39,6 +39,11 @@ from usuarios.models import Usuario
 from grupos.models import Grupo
 from usuario_grupo.models import UsuarioGrupo
 from anos.models import Ano
+from disciplinas.models import Disciplina
+from ensinos.models import Ensino
+from etapas.models import Etapa
+from descritores.models import Descritor
+
 
 def home_view(request):
     # Verificar se o usuário está autenticado
@@ -58,6 +63,10 @@ def home_view(request):
     grupos_lista = Grupo.objects.all() if is_admin else None
     associacoes = UsuarioGrupo.objects.all() if is_admin else None
     anos = Ano.objects.all() if is_admin else None
+    disciplinas = Disciplina.objects.all() if is_admin else None
+    ensinos = Ensino.objects.all() if is_admin else None
+    etapas = Etapa.objects.all() if is_admin else None
+    descritores = Descritor.objects.all() if is_admin else None
 
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
@@ -67,6 +76,10 @@ def home_view(request):
         'grupos_lista': grupos_lista,
         'associacoes': associacoes,
         'anos': anos,  # Passar os anos para o template
+        'disciplinas': disciplinas,
+        'ensinos': ensinos,
+        'etapas': etapas,
+        'descritores': descritores,
     })
 
 

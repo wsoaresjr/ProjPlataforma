@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Ensinos</title>
+</head>
+<body>
+    <h1>Lista de Ensinos</h1>
+    <!-- Botão para Cadastrar Ensino -->
+    <form action="{% url 'cadastrar_ensino' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Ensino</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Ensino</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ensino in ensinos %}
+            <tr>
+                <td>{{ ensino.cod_ensino }}</td>
+                <td>{{ ensino.ensino }}</td>
+                <td>
+                    <!-- Botão para Editar -->
+                    <form action="{% url 'editar_ensino' ensino.cod_ensino %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <!-- Botão para Excluir -->
+                    <form action="{% url 'excluir_ensino' ensino.cod_ensino %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este ensino?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Botão para Voltar à Home -->
+    <form action="{% url 'home' %}" method="get" style="display: inline;">
+        <button type="submit">Voltar</button>
+    </form>
+</body>
+</html>

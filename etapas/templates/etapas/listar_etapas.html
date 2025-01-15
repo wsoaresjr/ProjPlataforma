@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Etapas</title>
+</head>
+<body>
+    <h1>Lista de Etapas</h1>
+    <!-- Botão para Cadastrar Etapa -->
+    <form action="{% url 'cadastrar_etapa' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Etapa</button>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Etapa</th>
+                <th>Ensino</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etapa in etapas %}
+            <tr>
+                <td>{{ etapa.cod_etapa }}</td>
+                <td>{{ etapa.etapa }}</td>
+                <td>{{ etapa.ensino.ensino }}</td>
+                <td>
+                    <!-- Botão para Editar -->
+                    <form action="{% url 'editar_etapa' etapa.cod_etapa %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <!-- Botão para Excluir -->
+                    <form action="{% url 'excluir_etapa' etapa.cod_etapa %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta etapa?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Botão para Voltar à Home -->
+    <form action="{% url 'home' %}" method="get" style="display: inline;">
+        <button type="submit">Voltar</button>
+    </form>
+</body>
+</html>

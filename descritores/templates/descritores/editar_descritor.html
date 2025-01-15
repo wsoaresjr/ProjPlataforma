@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Descritor</title>
+</head>
+<body>
+    <h1>Editar Descritor: {{ descritor.descritor }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    <a href="{% url 'listar_descritores' %}">Voltar</a>
+</body>
+</html>

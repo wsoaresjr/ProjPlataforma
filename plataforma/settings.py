@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'grupos',
     'usuario_grupo',
     'anos',
+    'disciplinas',
+    'ensinos',
+    'etapas',
+    'descritores',
 ]
 
 MIDDLEWARE = [
