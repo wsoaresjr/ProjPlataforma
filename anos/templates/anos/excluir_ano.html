@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excluir Ano</title>
+</head>
+<body>
+    <h1>Excluir Ano</h1>
+    <p>Tem certeza que deseja excluir o ano "{{ ano.ano }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+    </form>
+    <a href="{% url 'listar_anos' %}">Cancelar</a>
+</body>
+</html>

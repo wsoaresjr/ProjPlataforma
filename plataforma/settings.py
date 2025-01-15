@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'usuarios',
     'grupos',
     'usuario_grupo',
+    'anos',
 ]
 
 MIDDLEWARE = [

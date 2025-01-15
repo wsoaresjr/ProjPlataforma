@@ -38,13 +38,14 @@ from django.shortcuts import render, redirect
 from usuarios.models import Usuario
 from grupos.models import Grupo
 from usuario_grupo.models import UsuarioGrupo
+from anos.models import Ano
 
 def home_view(request):
     # Verificar se o usuário está autenticado
     if 'usuario_id' not in request.session:
         return redirect('/')  # Redirecionar para a página de login
 
-    # Buscar o usuário e os grupos aos quais ele pertence
+    # Buscar o usuário e seus grupos
     usuario_id = request.session['usuario_id']
     usuario_nome = request.session['usuario_nome']
     grupos = UsuarioGrupo.objects.filter(usuario__cod_usuario=usuario_id).values_list('grupo__nome_grupo', flat=True)
@@ -52,10 +53,11 @@ def home_view(request):
     # Verificar se o usuário é administrador
     is_admin = 'Administradores' in grupos
 
-    # Obter lista de usuários, grupos e associações se o usuário for administrador
+    # Obter lista de usuários, grupos, associações e anos se o usuário for administrador
     usuarios = Usuario.objects.all() if is_admin else None
     grupos_lista = Grupo.objects.all() if is_admin else None
     associacoes = UsuarioGrupo.objects.all() if is_admin else None
+    anos = Ano.objects.all() if is_admin else None
 
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
@@ -64,7 +66,9 @@ def home_view(request):
         'usuarios': usuarios,
         'grupos_lista': grupos_lista,
         'associacoes': associacoes,
+        'anos': anos,  # Passar os anos para o template
     })
+
 
 
 

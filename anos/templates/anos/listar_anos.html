@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Anos</title>
+</head>
+<body>
+    <h1>Lista de Anos</h1>
+    <a href="{% url 'cadastrar_ano' %}">Cadastrar Ano</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Ano</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ano in anos %}
+            <tr>
+                <td>{{ ano.cod_ano }}</td>
+                <td>{{ ano.ano }}</td>
+                <td>
+                    <a href="{% url 'editar_ano' ano.cod_ano %}">Editar</a>
+                    <form action="{% url 'excluir_ano' ano.cod_ano %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>

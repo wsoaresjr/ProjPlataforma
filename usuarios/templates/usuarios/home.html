@@ -52,7 +52,6 @@
             </tbody>
         </table>
 
-
         <!-- Gerenciar Grupos -->
         <h2>Gerenciar Grupos</h2>
         <form action="{% url 'cadastrar_grupo' %}" method="get" style="display: inline;">
@@ -114,6 +113,39 @@
                         <form action="{% url 'excluir_associacao' associacao.id %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta associação?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Gerenciar Anos -->
+        <h2>Gerenciar Anos</h2>
+        <form action="{% url 'cadastrar_ano' %}" method="get" style="display: inline;">
+            <button type="submit">Cadastrar Ano</button>
+        </form>
+        <h3>Lista dos Anos</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Ano</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ano in anos %}
+                <tr>
+                    <td>{{ ano.cod_ano }}</td>
+                    <td>{{ ano.ano }}</td>
+                    <td>
+                        <form action="{% url 'editar_ano' ano.cod_ano %}" method="get" style="display: inline;">
+                            <button type="submit">Editar</button>
+                        </form>
+                        <form action="{% url 'excluir_ano' ano.cod_ano %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este ano?')">Excluir</button>
                         </form>
                     </td>
                 </tr>
