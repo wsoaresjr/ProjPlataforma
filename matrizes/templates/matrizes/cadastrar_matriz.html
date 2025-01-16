@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Matriz</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Cadastrar Matriz</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'listar_matrizes' %}">Voltar</a>
+
+    <script>
+        $(document).ready(function() {
+            // Atualizar Subprogramas ao Selecionar Programa
+            $('#id_programa').change(function() {
+                var programaId = $(this).val();
+                $.ajax({
+                    url: "{% url 'filtrar_subprogramas' %}",
+                    data: { 'programa': programaId },
+                    success: function(data) {
+                        $('#id_subprograma').html(data);
+                    }
+                });
+            });
+
+            // Atualizar Descritores ao Selecionar Disciplina
+            $('#id_disciplina').change(function() {
+                var disciplinaId = $(this).val();
+                $.ajax({
+                    url: "{% url 'filtrar_descritores' %}",
+                    data: { 'disciplina': disciplinaId },
+                    success: function(data) {
+                        $('#id_descritores').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

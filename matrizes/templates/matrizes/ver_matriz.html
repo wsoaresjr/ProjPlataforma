@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ver Matriz</title>
+</head>
+<body>
+    <h1>Detalhes da Matriz</h1>
+
+    <p><strong>Programa:</strong> {{ matriz.programa.programa }}</p>
+    <p><strong>Subprograma:</strong> {{ matriz.subprograma.subprograma }}</p>
+    <p><strong>Matriz:</strong> {{ matriz.matriz }}</p>
+    <p><strong>Disciplina:</strong> {{ matriz.disciplina.disciplina }}</p>
+    <p><strong>Etapa:</strong> {{ matriz.etapa.etapa }}</p>
+
+    <h2>Descritores Selecionados</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código do Descritor</th>
+                <th>Descritor</th>
+                <th>Eixo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for descritor in descritores %}
+            <tr>
+                <td>{{ descritor.cod_descritor }}</td>
+                <td>{{ descritor.descritor }}</td>
+                <td>{{ descritor.eixo }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botões para exportação -->
+    <form action="{% url 'exportar_matriz_excel' matriz.cod_matriz %}" method="get" style="display: inline;">
+        <button type="submit">Exportar para Excel</button>
+    </form>
+    <form action="{% url 'exportar_matriz_pdf' matriz.cod_matriz %}" method="get" style="display: inline;">
+        <button type="submit">Exportar para PDF</button>
+    </form>
+
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>

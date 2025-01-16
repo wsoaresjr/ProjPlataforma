@@ -417,35 +417,36 @@
                 </td>
                 <td>{{ programa.observacoes }}</td>
                 <td>
-                    <form action="{% url 'editar_programa' programa.cod_programa %}" method="get" style="display: inline;">
+                    <form action="{% url 'editar_programa' programa.cod_programa %}" method="get"
+                        style="display: inline;">
                         <button type="submit">Editar</button>
                     </form>
-                    <form action="{% url 'excluir_programa' programa.cod_programa %}" method="post" style="display: inline;">
+                    <form action="{% url 'excluir_programa' programa.cod_programa %}" method="post"
+                        style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este programa?')">Excluir</button>
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este programa?')">Excluir</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
+
     <!-- Gerenciar Subprogramas -->
     <h2>Gerenciar Subprogramas</h2>
     <form action="{% url 'cadastrar_subprograma' %}" method="get" style="display: inline;">
         <button type="submit">Cadastrar Subprograma</button>
     </form>
-    <h3>Lista dos Subprogramas</h3>
+    <h3>Lista de Subprogramas</h3>
     <table border="1">
         <thead>
             <tr>
                 <th>Código</th>
                 <th>Subprograma</th>
-                <th>Data Aplicação</th>
-                <th>Qtd Itens</th>
-                <th>Tipo Item</th>
-                <th>Padrão Item</th>
-                <th>Disciplinas Avaliadas</th>
+                <th>Programa</th>
+                <th>Data de Aplicação</th>
+                <th>Etapas Avaliadas</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -454,30 +455,154 @@
             <tr>
                 <td>{{ subprograma.cod_subprograma }}</td>
                 <td>{{ subprograma.subprograma }}</td>
+                <td>{{ subprograma.programa.programa }}</td>
                 <td>{{ subprograma.data_aplicacao }}</td>
-                <td>{{ subprograma.qtd_itens }}</td>
-                <td>{{ subprograma.tipo_item.tipo_item }}</td>
-                <td>{{ subprograma.padrao_item.padrao_item }}</td>
                 <td>
-                    {% for disciplina in subprograma.disciplinas_avaliadas.all %}
-                        {{ disciplina.disciplina }}{% if not forloop.last %}, {% endif %}
+                    {% for etapa in subprograma.etapas_avaliadas.all %}
+                    {{ etapa.etapa }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </td>
                 <td>
-                    <form action="{% url 'editar_subprograma' subprograma.cod_subprograma %}" method="get" style="display: inline;">
+                    <form action="{% url 'editar_subprograma' subprograma.cod_subprograma %}" method="get"
+                        style="display: inline;">
                         <button type="submit">Editar</button>
                     </form>
-                    <form action="{% url 'excluir_subprograma' subprograma.cod_subprograma %}" method="post" style="display: inline;">
+                    <form action="{% url 'excluir_subprograma' subprograma.cod_subprograma %}" method="post"
+                        style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este subprograma?')">Excluir</button>
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir este subprograma?')">Excluir</button>
                     </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
 
+
+
+    <!-- Gerenciar Matrizes -->
+    <h3>Lista de Matrizes</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Matriz</th>
+                <th>Programa</th>
+                <th>Subprograma</th>
+                <th>Disciplina</th>
+                <th>Etapa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for matriz in matrizes %}
+            <tr>
+                <td>{{ matriz.cod_matriz }}</td>
+                <td>{{ matriz.matriz }}</td>
+                <td>{{ matriz.programa.programa }}</td>
+                <td>{{ matriz.subprograma.subprograma }}</td>
+                <td>{{ matriz.disciplina.disciplina }}</td>
+                <td>{{ matriz.etapa.etapa }}</td>
+                <td>
+                    <form action="{% url 'editar_matriz' matriz.cod_matriz %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_matriz' matriz.cod_matriz %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir esta matriz?')">Excluir</button>
+                    </form>
+                    <form action="{% url 'ver_matriz' matriz.cod_matriz %}" method="get" style="display: inline;">
+                        <button type="submit">Ver Matriz</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+
+    {% endif %}
+
+    {% if is_modelagem %}
+    <!-- Listar Subprogramas -->
+    <h2>Lista de Subprogramas</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Subprograma</th>
+                <th>Programa</th>
+                <th>Data de Aplicação</th>
+                <th>Etapas Avaliadas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subprograma in subprogramas %}
+            <tr>
+                <td>{{ subprograma.cod_subprograma }}</td>
+                <td>{{ subprograma.subprograma }}</td>
+                <td>{{ subprograma.programa.programa }}</td>
+                <td>{{ subprograma.data_aplicacao }}</td>
+                <td>
+                    {% for etapa in subprograma.etapas_avaliadas.all %}
+                    {{ etapa.etapa }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Gerenciar Matrizes -->
+    <h2>Gerenciar Matrizes</h2>
+    <form action="{% url 'cadastrar_matriz' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Matriz</button>
+    </form>
+    <h3>Lista de Matrizes</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Matriz</th>
+                <th>Programa</th>
+                <th>Subprograma</th>
+                <th>Disciplina</th>
+                <th>Etapa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for matriz in matrizes %}
+            <tr>
+                <td>{{ matriz.cod_matriz }}</td>
+                <td>{{ matriz.matriz }}</td>
+                <td>{{ matriz.programa.programa }}</td>
+                <td>{{ matriz.subprograma.subprograma }}</td>
+                <td>{{ matriz.disciplina.disciplina }}</td>
+                <td>{{ matriz.etapa.etapa }}</td>
+                <td>
+                    <form action="{% url 'editar_matriz' matriz.cod_matriz %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'excluir_matriz' matriz.cod_matriz %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            onclick="return confirm('Tem certeza que deseja excluir esta matriz?')">Excluir</button>
+                    </form>
+                    <form action="{% url 'ver_matriz' matriz.cod_matriz %}" method="get" style="display: inline;">
+                        <button type="submit">Ver Matriz</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 
 

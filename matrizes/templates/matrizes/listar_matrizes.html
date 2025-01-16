@@ -1,0 +1,38 @@
+<h3>Lista de Matrizes</h3>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Matriz</th>
+            <th>Programa</th>
+            <th>Subprograma</th>
+            <th>Disciplina</th>
+            <th>Etapa</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for matriz in matrizes %}
+        <tr>
+            <td>{{ matriz.cod_matriz }}</td>
+            <td>{{ matriz.matriz }}</td>
+            <td>{{ matriz.programa.programa }}</td>
+            <td>{{ matriz.subprograma.subprograma }}</td>
+            <td>{{ matriz.disciplina.disciplina }}</td>
+            <td>{{ matriz.etapa.etapa }}</td>
+            <td>
+                <form action="{% url 'editar_matriz' matriz.cod_matriz %}" method="get" style="display: inline;">
+                    <button type="submit">Editar</button>
+                </form>
+                <form action="{% url 'excluir_matriz' matriz.cod_matriz %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta matriz?')">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<a href="{% url 'home' %}">Voltar</a>

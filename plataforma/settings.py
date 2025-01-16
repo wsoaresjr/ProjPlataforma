@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'padrao_item',
     'programas',
     'subprogramas',
+    'matrizes',
 ]
 
 MIDDLEWARE = [

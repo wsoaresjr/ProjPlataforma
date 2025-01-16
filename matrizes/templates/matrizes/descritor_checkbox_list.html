@@ -1,0 +1,6 @@
+{% for descritor in descritores %}
+<div>
+    <input type="checkbox" name="descritores" value="{{ descritor.id }}" id="descritor_{{ descritor.id }}">
+    <label for="descritor_{{ descritor.id }}">{{ descritor }}</label>
+</div>
+{% endfor %}

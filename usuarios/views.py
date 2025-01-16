@@ -47,6 +47,8 @@ from tipo_item.models import TipoItem
 from padrao_item.models import PadraoItem
 from programas.models import Programa
 from subprogramas.models import Subprograma
+from matrizes.models import Matriz
+
 
 def home_view(request):
     # Verificar se o usuário está autenticado
@@ -58,10 +60,11 @@ def home_view(request):
     usuario_nome = request.session['usuario_nome']
     grupos = UsuarioGrupo.objects.filter(usuario__cod_usuario=usuario_id).values_list('grupo__nome_grupo', flat=True)
 
-    # Verificar se o usuário é administrador
+    # Verificar o grupo do usuário
     is_admin = 'Administradores' in grupos
+    is_modelagem = 'Modelagem' in grupos
 
-    # Obter lista de usuários, grupos, associações e anos se o usuário for administrador
+    # Dados para administradores
     usuarios = Usuario.objects.all() if is_admin else None
     grupos_lista = Grupo.objects.all() if is_admin else None
     associacoes = UsuarioGrupo.objects.all() if is_admin else None
@@ -72,26 +75,35 @@ def home_view(request):
     descritores = Descritor.objects.all() if is_admin else None
     tipos_item = TipoItem.objects.all() if is_admin else None
     padroes_item = PadraoItem.objects.all() if is_admin else None
-    programas = Programa.objects.all() if is_admin else None
-    subprogramas = Subprograma.objects.all() if is_admin else None
+    programas_admin = Programa.objects.all() if is_admin else None
+    subprogramas_admin = Subprograma.objects.all() if is_admin else None
+    matrizes_admin = Matriz.objects.all() if is_admin else None
+
+    # Dados para modelagem
+    programas_modelagem = Programa.objects.all() if is_modelagem else None
+    subprogramas_modelagem = Subprograma.objects.all() if is_modelagem else None
+    matrizes_modelagem = Matriz.objects.filter(programa__in=programas_modelagem) if is_modelagem else None
 
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
         'grupos': grupos,
         'is_admin': is_admin,
+        'is_modelagem': is_modelagem,
         'usuarios': usuarios,
         'grupos_lista': grupos_lista,
         'associacoes': associacoes,
-        'anos': anos,  # Passar os anos para o template
+        'anos': anos,
         'disciplinas': disciplinas,
         'ensinos': ensinos,
         'etapas': etapas,
         'descritores': descritores,
         'tipos_item': tipos_item,
         'padroes_item': padroes_item,
-        'programas': programas,
-        'subprogramas': subprogramas,
+        'programas': programas_admin if is_admin else programas_modelagem,
+        'subprogramas': subprogramas_admin if is_admin else subprogramas_modelagem,
+        'matrizes': matrizes_admin if is_admin else matrizes_modelagem,
     })
+
 
 
 

@@ -4,22 +4,15 @@
     <title>Lista de Subprogramas</title>
 </head>
 <body>
-    <h1>Lista de Subprogramas</h1>
-    <!-- Botão para Cadastrar Subprograma -->
-    <form action="{% url 'cadastrar_subprograma' %}" method="get" style="display: inline;">
-        <button type="submit">Cadastrar Subprograma</button>
-    </form>
+    <h3>Lista de Subprogramas</h3>
     <table border="1">
         <thead>
             <tr>
                 <th>Código</th>
                 <th>Subprograma</th>
-                <th>Data Aplicação</th>
-                <th>Disciplinas Avaliadas</th>
-                <th>Qtd Itens</th>
-                <th>Tipo Item</th>
-                <th>Padrão Item</th>
-                <th>Ações</th>
+                <th>Programa</th>
+                <th>Data de Aplicação</th>
+                <th>Etapas Avaliadas</th>
             </tr>
         </thead>
         <tbody>
@@ -27,30 +20,19 @@
             <tr>
                 <td>{{ subprograma.cod_subprograma }}</td>
                 <td>{{ subprograma.subprograma }}</td>
+                <td>{{ subprograma.programa.programa }}</td>
                 <td>{{ subprograma.data_aplicacao }}</td>
                 <td>
-                    {% for disciplina in subprograma.disciplinas_avaliadas.all %}
-                        {{ disciplina.disciplina }}{% if not forloop.last %}, {% endif %}
+                    {% for etapa in subprograma.etapas_avaliadas.all %}
+                        {{ etapa.etapa }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                </td>
-                <td>{{ subprograma.qtd_itens }}</td>
-                <td>{{ subprograma.tipo_item.tipo_item }}</td>
-                <td>{{ subprograma.padrao_item.padrao_item }}</td>
-                <td>
-                    <!-- Botão para Editar -->
-                    <form action="{% url 'editar_subprograma' subprograma.cod_subprograma %}" method="get" style="display: inline;">
-                        <button type="submit">Editar</button>
-                    </form>
-                    <!-- Botão para Excluir -->
-                    <form action="{% url 'excluir_subprograma' subprograma.cod_subprograma %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este subprograma?')">Excluir</button>
-                    </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    
+    
     <!-- Botão para Voltar à Home -->
     <form action="{% url 'home' %}" method="get" style="display: inline;">
         <button type="submit">Voltar</button>
