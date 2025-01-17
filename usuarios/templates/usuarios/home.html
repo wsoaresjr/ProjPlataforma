@@ -604,6 +604,46 @@
         </tbody>
     </table>
 
+    <!-- Gerenciar Demandas -->
+    <h2>Gerenciar Demandas</h2>
+    <form action="{% url 'cadastrar_demanda' %}" method="get" style="display: inline;">
+        <button type="submit">Cadastrar Demanda</button>
+    </form>
+    <h3>Lista de Demandas</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demanda in demandas %}
+            <tr>
+                <td>{{ demanda.cod_demanda }}</td>
+                <td>{{ demanda.nome_demanda }}</td>
+                <td>
+                    <form action="{% url 'editar_demanda' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'detalhar_demanda' demanda.cod_demanda %}" method="get"
+                        style="display: inline;">
+                        <button type="submit">Ver Detalhes</button>
+                    </form>
+                    <form action="{% url 'gerar_itens' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Gerar Itens</button>
+                    </form>
+                    <form action="{% url 'editar_itens' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Editar Itens</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
 
 
 

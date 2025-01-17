@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Itens</title>
+</head>
+<body>
+    <h1>Editar Itens da Demanda: {{ demanda.nome_demanda }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Código do Item</th>
+                    <th>Disciplina</th>
+                    <th>Etapa</th>
+                    <th>Elaborador</th>
+                    <th>Revisor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>{{ item.cod_item }}</td>
+                    <td>{{ item.disciplina }}</td>
+                    <td>{{ item.etapa }}</td>
+                    <td>
+                        <select name="elaborador_{{ item.cod_item }}">
+                            <option value="">-- Selecione --</option>
+                            {% for elaborador in elaboradores %}
+                            <option value="{{ elaborador.pk }}" {% if elaborador == item.elaborador %}selected{% endif %}>
+                                {{ elaborador.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="revisor_{{ item.cod_item }}">
+                            <option value="">-- Selecione --</option>
+                            {% for revisor in revisores %}
+                            <option value="{{ revisor.pk }}" {% if revisor == item.revisor %}selected{% endif %}>
+                                {{ revisor.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>
+

@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Demandas</title>
+</head>
+<body>
+    <h1>Lista de Demandas</h1>
+    <a href="{% url 'cadastrar_demanda' %}">Cadastrar Nova Demanda</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demanda in demandas %}
+            <tr>
+                <td>{{ demanda.cod_demanda }}</td>
+                <td>{{ demanda.nome_demanda }}</td>
+                <td>
+                    <form action="{% url 'editar_demanda' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Editar</button>
+                    </form>
+                    <form action="{% url 'detalhar_demanda' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Ver Detalhes</button>
+                    </form>
+                    <form action="{% url 'gerar_itens' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Gerar Itens</button>
+                    </form>
+                    <form action="{% url 'editar_itens' demanda.cod_demanda %}" method="get" style="display: inline;">
+                        <button type="submit">Editar Itens</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>

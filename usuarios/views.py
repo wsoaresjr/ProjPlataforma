@@ -48,6 +48,7 @@ from padrao_item.models import PadraoItem
 from programas.models import Programa
 from subprogramas.models import Subprograma
 from matrizes.models import Matriz
+from demandas.models import Demanda
 
 
 def home_view(request):
@@ -83,6 +84,7 @@ def home_view(request):
     programas_modelagem = Programa.objects.all() if is_modelagem else None
     subprogramas_modelagem = Subprograma.objects.all() if is_modelagem else None
     matrizes_modelagem = Matriz.objects.filter(programa__in=programas_modelagem) if is_modelagem else None
+    demandas = Demanda.objects.all() if is_modelagem else None
 
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
@@ -102,6 +104,7 @@ def home_view(request):
         'programas': programas_admin if is_admin else programas_modelagem,
         'subprogramas': subprogramas_admin if is_admin else subprogramas_modelagem,
         'matrizes': matrizes_admin if is_admin else matrizes_modelagem,
+        'demandas': demandas,
     })
 
 

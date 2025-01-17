@@ -1,0 +1,17 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Demanda</title>
+</head>
+<body>
+    <h1>Cadastrar Demanda</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>

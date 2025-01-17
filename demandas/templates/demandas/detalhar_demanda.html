@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalhes da Demanda</title>
+</head>
+<body>
+    <h1>Detalhes da Demanda: {{ demanda.nome_demanda }}</h1>
+    <p><strong>Observações:</strong> {{ demanda.observacoes }}</p>
+    <h2>Itens Gerados</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Disciplina</th>
+                <th>Etapa</th>
+                <th>Padrão de Item</th>
+                <th>Tipo de Item</th>
+                <th>Descritor</th>
+                <th>Elaborador</th>
+                <th>Revisor</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.cod_item }}</td>
+                <td>{{ item.disciplina }}</td>
+                <td>{{ item.etapa }}</td>
+                <td>{{ item.padrao_item }}</td>
+                <td>{{ item.tipo_item }}</td>
+                <td>{{ item.descritor }}</td>
+                <td>{{ item.elaborador }}</td>
+                <td>{{ item.revisor }}</td>
+                <td>{{ item.status_item }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>
+
+

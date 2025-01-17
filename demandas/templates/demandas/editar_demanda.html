@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Demanda</title>
+</head>
+<body>
+    <h1>Editar Demanda: {{ demanda.nome_demanda }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>
+

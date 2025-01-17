@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerar Itens</title>
+</head>
+<body>
+    <h1>Gerar Itens para a Demanda: {{ demanda.nome_demanda }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Gerar Itens</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar para Home</a>
+</body>
+</html>
+

@@ -37,5 +37,6 @@ urlpatterns = [
     path('programas/', include('programas.urls')),
     path('subprogramas/', include('subprogramas.urls')),
     path('matrizes/', include('matrizes.urls')),
+    path('demandas/', include('demandas.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
