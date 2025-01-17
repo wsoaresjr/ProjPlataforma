@@ -14,7 +14,11 @@
                     <th>Disciplina</th>
                     <th>Etapa</th>
                     <th>Elaborador</th>
+                    <th>Data Elaborador</th>
+                    <th>Status Elaborador</th>
                     <th>Revisor</th>
+                    <th>Data Revisor</th>
+                    <th>Status Revisor</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +38,12 @@
                         </select>
                     </td>
                     <td>
+                        <input type="date" name="data_elaborador_{{ item.cod_item }}" value="{{ item.data_elaborador }}">
+                    </td>
+                    <td>
+                        <span style="color: {{ item.status_elaborador.1 }}">{{ item.status_elaborador.0 }}</span>
+                    </td>
+                    <td>
                         <select name="revisor_{{ item.cod_item }}">
                             <option value="">-- Selecione --</option>
                             {% for revisor in revisores %}
@@ -42,6 +52,12 @@
                             </option>
                             {% endfor %}
                         </select>
+                    </td>
+                    <td>
+                        <input type="date" name="data_revisor_{{ item.cod_item }}" value="{{ item.data_revisor }}">
+                    </td>
+                    <td>
+                        <span style="color: {{ item.status_revisor.1 }}">{{ item.status_revisor.0 }}</span>
                     </td>
                 </tr>
                 {% endfor %}
@@ -52,4 +68,3 @@
     <a href="{% url 'home' %}">Voltar para Home</a>
 </body>
 </html>
-

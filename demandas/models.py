@@ -6,6 +6,7 @@ from padrao_item.models import PadraoItem
 from tipo_item.models import TipoItem
 from descritores.models import Descritor
 from usuarios.models import Usuario
+from django.utils import timezone
 
 class Demanda(models.Model):
     cod_demanda = models.CharField(max_length=10, primary_key=True)
@@ -26,8 +27,33 @@ class Item(models.Model):
     descritor = models.ForeignKey(Descritor, on_delete=models.CASCADE)
     qtd_itens = models.PositiveIntegerField()
     elaborador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='elaborador')
+    data_elaborador = models.DateField(null=True, blank=True)
     revisor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='revisor')
+    data_revisor = models.DateField(null=True, blank=True)
     status_item = models.CharField(max_length=20, default="A Elaborar")
 
     def __str__(self):
         return self.cod_item
+
+    def calcular_status(self, data):
+            if not data:
+                return "Sem Prazo"
+            hoje = timezone.now().date()
+            dias_restantes = (data - hoje).days
+
+            if dias_restantes > 2:
+                return "No prazo", "green"
+            elif dias_restantes == 2:
+                return "Prazo terminando", "blue"
+            elif dias_restantes == 0:
+                return "Prazo termina hoje!", "orange"
+            else:
+                return "Prazo expirado", "red"
+
+    @property
+    def status_elaborador(self):
+        return self.calcular_status(self.data_elaborador)
+
+    @property
+    def status_revisor(self):
+        return self.calcular_status(self.data_revisor)

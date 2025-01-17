@@ -30,7 +30,7 @@ def gerar_itens(request, cod_demanda):
             item = item_form.save(commit=False)
             item.demanda = demanda
 
-            # Gerar códigos de itens com a lógica descrita
+            # Gerar códigos de itens
             ultimo_item = Item.objects.filter(disciplina=item.disciplina, etapa=item.etapa).aggregate(Max('cod_item'))
             proximo_codigo = int(ultimo_item['cod_item__max'][-6:]) + 1 if ultimo_item['cod_item__max'] else 0
             base_cod_item = f"{item.disciplina.sigla}{item.etapa.cod_etapa}"
@@ -43,7 +43,6 @@ def gerar_itens(request, cod_demanda):
     else:
         item_form = ItemForm()
 
-    # Filtrar usuários dos grupos corretos
     elaboradores = Usuario.objects.filter(usuariogrupo__grupo__nome_grupo='Elaboradores').distinct()
     revisores = Usuario.objects.filter(usuariogrupo__grupo__nome_grupo='Revisores').distinct()
 
@@ -85,15 +84,21 @@ def editar_itens(request, cod_demanda):
     if request.method == 'POST':
         for item in itens:
             elaborador_id = request.POST.get(f'elaborador_{item.cod_item}')
+            data_elaborador = request.POST.get(f'data_elaborador_{item.cod_item}')
             revisor_id = request.POST.get(f'revisor_{item.cod_item}')
+            data_revisor = request.POST.get(f'data_revisor_{item.cod_item}')
+            
             if elaborador_id:
                 item.elaborador = Usuario.objects.get(pk=elaborador_id)
+            if data_elaborador:
+                item.data_elaborador = data_elaborador
             if revisor_id:
                 item.revisor = Usuario.objects.get(pk=revisor_id)
+            if data_revisor:
+                item.data_revisor = data_revisor
             item.save()
         return redirect('detalhar_demanda', cod_demanda=cod_demanda)
 
-    # Filtrar usuários dos grupos corretos
     elaboradores = Usuario.objects.filter(usuariogrupo__grupo__nome_grupo='Elaboradores').distinct()
     revisores = Usuario.objects.filter(usuariogrupo__grupo__nome_grupo='Revisores').distinct()
 

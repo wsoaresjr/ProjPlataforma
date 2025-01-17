@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Detalhes da Demanda</title>
 </head>
+
 <body>
     <h1>Detalhes da Demanda: {{ demanda.nome_demanda }}</h1>
     <p><strong>Observações:</strong> {{ demanda.observacoes }}</p>
@@ -17,7 +19,11 @@
                 <th>Tipo de Item</th>
                 <th>Descritor</th>
                 <th>Elaborador</th>
+                <th>Data Elaborador</th>
+                <th>Status Elaborador</th>
                 <th>Revisor</th>
+                <th>Data Revisor</th>
+                <th>Status Revisor</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -31,7 +37,15 @@
                 <td>{{ item.tipo_item }}</td>
                 <td>{{ item.descritor }}</td>
                 <td>{{ item.elaborador }}</td>
+                <td>{{ item.data_elaborador }}</td>
+                <td>
+                    <span style="color: {{ item.status_elaborador.1 }}">{{ item.status_elaborador.0 }}</span>
+                </td>
                 <td>{{ item.revisor }}</td>
+                <td>{{ item.data_revisor }}</td>
+                <td>
+                    <span style="color: {{ item.status_revisor.1 }}">{{ item.status_revisor.0 }}</span>
+                </td>
                 <td>{{ item.status_item }}</td>
             </tr>
             {% endfor %}
@@ -39,6 +53,5 @@
     </table>
     <a href="{% url 'home' %}">Voltar para Home</a>
 </body>
+
 </html>
-
-

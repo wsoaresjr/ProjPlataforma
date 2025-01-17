@@ -11,5 +11,6 @@ class ItemForm(forms.ModelForm):
         model = Item
         fields = [
             'disciplina', 'etapa', 'matriz', 'padrao_item', 'tipo_item',
-            'descritor', 'qtd_itens', 'elaborador', 'revisor'
+            'descritor', 'qtd_itens', 'elaborador', 'data_elaborador',
+            'revisor', 'data_revisor'
         ]

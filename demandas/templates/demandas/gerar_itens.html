@@ -2,15 +2,74 @@
 <html>
 <head>
     <title>Gerar Itens</title>
+    <style>
+        .form-group {
+            margin-bottom: 15px; /* Espaçamento entre os campos */
+        }
+    </style>
 </head>
 <body>
     <h1>Gerar Itens para a Demanda: {{ demanda.nome_demanda }}</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+            <label for="disciplina">Disciplina:</label>
+            {{ form.disciplina }}
+        </div>
+        <div class="form-group">
+            <label for="etapa">Etapa:</label>
+            {{ form.etapa }}
+        </div>
+        <div class="form-group">
+            <label for="matriz">Matriz:</label>
+            {{ form.matriz }}
+        </div>
+        <div class="form-group">
+            <label for="padrao_item">Padrão de Item:</label>
+            {{ form.padrao_item }}
+        </div>
+        <div class="form-group">
+            <label for="tipo_item">Tipo de Item:</label>
+            {{ form.tipo_item }}
+        </div>
+        <div class="form-group">
+            <label for="descritor">Descritor:</label>
+            {{ form.descritor }}
+        </div>
+        <div class="form-group">
+            <label for="qtd_itens">Quantidade de Itens:</label>
+            {{ form.qtd_itens }}
+        </div>
+        <div class="form-group">
+            <label for="elaborador">Elaborador:</label>
+            <select id="elaborador" name="elaborador">
+                <option value="">-- Selecione um elaborador --</option>
+                {% for elaborador in elaboradores %}
+                <option value="{{ elaborador.pk }}">{{ elaborador.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="data_elaborador">Data do Elaborador:</label>
+            <input type="date" name="data_elaborador" id="data_elaborador">
+        </div>
+        <div class="form-group">
+            <label for="revisor">Revisor:</label>
+            <select id="revisor" name="revisor">
+                <option value="">-- Selecione um revisor --</option>
+                {% for revisor in revisores %}
+                <option value="{{ revisor.pk }}">{{ revisor.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="data_revisor">Data do Revisor:</label>
+            <input type="date" name="data_revisor" id="data_revisor">
+        </div>
         <button type="submit">Gerar Itens</button>
     </form>
     <a href="{% url 'home' %}">Voltar para Home</a>
 </body>
 </html>
+
 
