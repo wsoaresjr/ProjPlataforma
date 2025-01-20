@@ -9,4 +9,4 @@ class Descritor(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, related_name='descritores')
 
     def __str__(self):
-        return f"{self.cod_descritor} - {self.descritor[:50]}..."
+        return f"{self.cod_descritor} - {self.descritor}"

@@ -642,12 +642,43 @@
             {% endfor %}
         </tbody>
     </table>
-
-
-
-
-
     {% endif %}
+
+    {% if is_elaborador %}
+    <!-- Gerenciamento de Itens para Elaboração -->
+    <h2>Itens para Elaboração</h2>
+    <h3>Lista de Itens</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Código do Item</th>
+                <th>Etapa</th>
+                <th>Descritor</th>
+                <th>Data do Elaborador</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens_para_elaborar %}
+            <tr>
+                <td>{{ item.cod_item }}</td>
+                <td>{{ item.etapa }}</td>
+                <td>{{ item.descritor }}</td>
+                <td>{{ item.data_elaborador }}</td>
+                <td>
+                    <form action="{% url 'elaborar_item' item.cod_item %}" method="get" style="display: inline;">
+                        <button type="submit">Elaborar Item</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    
+
+
+    
 
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}

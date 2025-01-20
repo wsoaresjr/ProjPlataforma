@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Itens para Elaboração</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        .action-btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Itens para Elaboração</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código do Item</th>
+                <th>Etapa</th>
+                <th>Descritor</th>
+                <th>Data do Elaborador</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.cod_item }}</td>
+                <td>{{ item.etapa }}</td>
+                <td style="white-space: pre-wrap;">{{ item.descritor }}</td>
+                <td>{{ item.data_elaborador }}</td>
+                <td>
+                    <!-- Substituindo o Link por um Botão -->
+                    <form action="{% url 'elaborar_item' item.cod_item %}" method="get" style="display: inline;">
+                        <button type="submit" class="action-btn">Elaborar Item</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Botão para Voltar -->
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+        <button type="button">Voltar para Home</button>
+    </a>
+</body>
+</html>

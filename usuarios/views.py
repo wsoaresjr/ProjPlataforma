@@ -49,7 +49,7 @@ from programas.models import Programa
 from subprogramas.models import Subprograma
 from matrizes.models import Matriz
 from demandas.models import Demanda
-
+from demandas.models import Item
 
 def home_view(request):
     # Verificar se o usuário está autenticado
@@ -64,6 +64,7 @@ def home_view(request):
     # Verificar o grupo do usuário
     is_admin = 'Administradores' in grupos
     is_modelagem = 'Modelagem' in grupos
+    is_elaborador = 'Elaboradores' in grupos
 
     # Dados para administradores
     usuarios = Usuario.objects.all() if is_admin else None
@@ -86,6 +87,9 @@ def home_view(request):
     matrizes_modelagem = Matriz.objects.filter(programa__in=programas_modelagem) if is_modelagem else None
     demandas = Demanda.objects.all() if is_modelagem else None
 
+    # Dados para Elaboradores
+    itens_para_elaborar = Item.objects.filter(elaborador__cod_usuario=usuario_id, status_item="A Elaborar") if is_elaborador else None
+
     return render(request, 'usuarios/home.html', {
         'usuario_nome': usuario_nome,
         'grupos': grupos,
@@ -105,6 +109,8 @@ def home_view(request):
         'subprogramas': subprogramas_admin if is_admin else subprogramas_modelagem,
         'matrizes': matrizes_admin if is_admin else matrizes_modelagem,
         'demandas': demandas,
+        'is_elaborador': is_elaborador,
+        'itens_para_elaborar': itens_para_elaborar,
     })
 
 

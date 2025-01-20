@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elaborar Item</title>
+    <!-- Quill CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.20/dist/katex.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.20/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-katex"></script>
+    
+    <style>
+        .editor-container {
+            margin-bottom: 20px;
+        }
+        .ql-container {
+            min-height: 150px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        th {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Elaborar Item</h1>
+
+    <!-- Informações do Usuário -->
+    <p>Bem-vindo, <strong>{{ usuario.nome }}</strong></p>
+    <p>Você pertence aos seguintes grupos:</p>
+    <ul>
+        {% for grupo in grupos %}
+        <li>{{ grupo }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Quadro de Informações -->
+    <table style="width: 100%;">
+        <tr><th>Código do Item</th><td>{{ dados_item.cod_item }}</td></tr>
+        <tr><th>Etapa</th><td>{{ dados_item.etapa }}</td></tr>
+        <tr><th>Descritor</th><td style="word-wrap: break-word; white-space: pre-wrap; max-width: 100%;">{{ dados_item.descritor }}</td></tr>
+        <tr><th>Padrão do Item</th><td>{{ dados_item.padrao_item }}</td></tr>
+        <tr><th>Data Limite para Entrega</th><td>{{ dados_item.data_elaborador }}</td></tr>
+    </table>
+
+    <!-- Formulário de Edição -->
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="editor-container">
+            <label>Gabarito</label>
+            {{ form.gabarito }}
+        </div>
+
+        <div class="editor-container">
+            <label>Conteúdo</label>
+            <div id="editor-conteudo"></div>
+            <input type="hidden" name="conteudo" id="conteudo">
+        </div>
+
+        <div class="editor-container">
+            <label>Comando</label>
+            <div id="editor-comando"></div>
+            <input type="hidden" name="comando" id="comando">
+        </div>
+
+        <div class="editor-container">
+            <label>Alternativa A</label>
+            <div id="editor-alternativa-a"></div>
+            <input type="hidden" name="alternativa_a" id="alternativa_a">
+        </div>
+
+        <div class="editor-container">
+            <label>Alternativa B</label>
+            <div id="editor-alternativa-b"></div>
+            <input type="hidden" name="alternativa_b" id="alternativa_b">
+        </div>
+
+        <div class="editor-container">
+            <label>Alternativa C</label>
+            <div id="editor-alternativa-c"></div>
+            <input type="hidden" name="alternativa_c" id="alternativa_c">
+        </div>
+
+        <div class="editor-container">
+            <label>Alternativa D</label>
+            <div id="editor-alternativa-d"></div>
+            <input type="hidden" name="alternativa_d" id="alternativa_d">
+        </div>
+
+        <div class="editor-container">
+            <label>Alternativa E</label>
+            <div id="editor-alternativa-e"></div>
+            <input type="hidden" name="alternativa_e" id="alternativa_e">
+        </div>
+
+        <div class="editor-container">
+            <label>Justificativa A</label>
+            <div id="editor-justificativa-a"></div>
+            <input type="hidden" name="justificativa_a" id="justificativa_a">
+        </div>
+
+        <div class="editor-container">
+            <label>Justificativa B</label>
+            <div id="editor-justificativa-b"></div>
+            <input type="hidden" name="justificativa_b" id="justificativa_b">
+        </div>
+
+        <div class="editor-container">
+            <label>Justificativa C</label>
+            <div id="editor-justificativa-c"></div>
+            <input type="hidden" name="justificativa_c" id="justificativa_c">
+        </div>
+
+        <div class="editor-container">
+            <label>Justificativa D</label>
+            <div id="editor-justificativa-d"></div>
+            <input type="hidden" name="justificativa_d" id="justificativa_d">
+        </div>
+
+        <div class="editor-container">
+            <label>Justificativa E</label>
+            <div id="editor-justificativa-e"></div>
+            <input type="hidden" name="justificativa_e" id="justificativa_e">
+        </div>
+
+        <button type="submit" name="salvar">Salvar</button>
+        <button type="submit" name="salvar_enviar">Salvar e Enviar para Revisão</button>
+    </form>
+
+    <a href="{% url 'listar_itens' %}">Voltar para a Lista de Itens</a>
+
+    <!-- Quill JS -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+        const quillOptions = {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'image', 'video'],
+                    ['formula'],
+                    ['clean'],
+                ],
+                syntax: true,
+            },
+            placeholder: 'Digite aqui...'
+        };
+
+        const editors = {
+            conteudo: new Quill('#editor-conteudo', quillOptions),
+            comando: new Quill('#editor-comando', quillOptions),
+            alternativaA: new Quill('#editor-alternativa-a', quillOptions),
+            alternativaB: new Quill('#editor-alternativa-b', quillOptions),
+            alternativaC: new Quill('#editor-alternativa-c', quillOptions),
+            alternativaD: new Quill('#editor-alternativa-d', quillOptions),
+            alternativaE: new Quill('#editor-alternativa-e', quillOptions),
+            justificativaA: new Quill('#editor-justificativa-a', quillOptions),
+            justificativaB: new Quill('#editor-justificativa-b', quillOptions),
+            justificativaC: new Quill('#editor-justificativa-c', quillOptions),
+            justificativaD: new Quill('#editor-justificativa-d', quillOptions),
+            justificativaE: new Quill('#editor-justificativa-e', quillOptions),
+        };
+
+        function carregarConteudo(idEditor, data) {
+            if (data) {
+                try {
+                    const parsedData = JSON.parse(data);
+                    if (parsedData.html) {
+                        editors[idEditor].root.innerHTML = parsedData.html;
+                    }
+                } catch (error) {
+                    console.error(`Erro ao carregar dados no editor ${idEditor}:`, error);
+                }
+            }
+        }
+
+        carregarConteudo('conteudo', '{{ dados_item.conteudo|escapejs|default:"" }}');
+        carregarConteudo('comando', '{{ dados_item.comando|escapejs|default:"" }}');
+        carregarConteudo('alternativaA', '{{ dados_item.alternativa_a|escapejs|default:"" }}');
+        carregarConteudo('alternativaB', '{{ dados_item.alternativa_b|escapejs|default:"" }}');
+        carregarConteudo('alternativaC', '{{ dados_item.alternativa_c|escapejs|default:"" }}');
+        carregarConteudo('alternativaD', '{{ dados_item.alternativa_d|escapejs|default:"" }}');
+        carregarConteudo('alternativaE', '{{ dados_item.alternativa_e|escapejs|default:"" }}');
+        carregarConteudo('justificativaA', '{{ dados_item.justificativa_a|escapejs|default:"" }}');
+        carregarConteudo('justificativaB', '{{ dados_item.justificativa_b|escapejs|default:"" }}');
+        carregarConteudo('justificativaC', '{{ dados_item.justificativa_c|escapejs|default:"" }}');
+        carregarConteudo('justificativaD', '{{ dados_item.justificativa_d|escapejs|default:"" }}');
+        carregarConteudo('justificativaE', '{{ dados_item.justificativa_e|escapejs|default:"" }}');
+
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('conteudo').value = JSON.stringify({
+                delta: editors.conteudo.getContents(),
+                html: editors.conteudo.root.innerHTML,
+            });
+            document.getElementById('comando').value = JSON.stringify({
+                delta: editors.comando.getContents(),
+                html: editors.comando.root.innerHTML,
+            });
+            document.getElementById('alternativa_a').value = JSON.stringify({
+                delta: editors.alternativaA.getContents(),
+                html: editors.alternativaA.root.innerHTML,
+            });
+            document.getElementById('alternativa_b').value = JSON.stringify({
+                delta: editors.alternativaB.getContents(),
+                html: editors.alternativaB.root.innerHTML,
+            });
+            document.getElementById('alternativa_c').value = JSON.stringify({
+                delta: editors.alternativaC.getContents(),
+                html: editors.alternativaC.root.innerHTML,
+            });
+            document.getElementById('alternativa_d').value = JSON.stringify({
+                delta: editors.alternativaD.getContents(),
+                html: editors.alternativaD.root.innerHTML,
+            });
+            document.getElementById('alternativa_e').value = JSON.stringify({
+                delta: editors.alternativaE.getContents(),
+                html: editors.alternativaE.root.innerHTML,
+            });
+            document.getElementById('justificativa_a').value = JSON.stringify({
+                delta: editors.justificativaA.getContents(),
+                html: editors.justificativaA.root.innerHTML,
+            });
+            document.getElementById('justificativa_b').value = JSON.stringify({
+                delta: editors.justificativaB.getContents(),
+                html: editors.justificativaB.root.innerHTML,
+            });
+            document.getElementById('justificativa_c').value = JSON.stringify({
+                delta: editors.justificativaC.getContents(),
+                html: editors.justificativaC.root.innerHTML,
+            });
+            document.getElementById('justificativa_d').value = JSON.stringify({
+                delta: editors.justificativaD.getContents(),
+                html: editors.justificativaD.root.innerHTML,
+            });
+            document.getElementById('justificativa_e').value = JSON.stringify({
+                delta: editors.justificativaE.getContents(),
+                html: editors.justificativaE.root.innerHTML,
+            });
+        });
+    </script>
+</body>
+</html>
+
+
