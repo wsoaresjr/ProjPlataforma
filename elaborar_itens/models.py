@@ -21,6 +21,7 @@ class ElaboracaoItem(models.Model):
     justificativa_c = QuillField(null=True, blank=True)
     justificativa_d = QuillField(null=True, blank=True)
     justificativa_e = QuillField(null=True, blank=True)
+    revisao_texto = QuillField(null=True, blank=True)
 
     def __str__(self):
         return f"Elaboração do Item {self.item.cod_item}"

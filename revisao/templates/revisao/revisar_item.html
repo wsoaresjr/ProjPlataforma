@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Revisar Item {{ metadados.Código }}</title>
+
+  <!-- Quill snow theme -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+  <!-- Se você usar Bootstrap, certifique-se de que o caminho está correto -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body class="container py-4">
+
+  <h1 class="mb-4">Revisar Item {{ metadados.Código }}</h1>
+
+  <!-- Metadados -->
+  <table class="table table-bordered">
+    {% for chave, valor in metadados.items %}
+      <tr>
+        <th style="width:150px">{{ chave }}</th>
+        <td>{{ valor }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <!-- Conteúdo do Item -->
+  <div class="mb-4">
+    <h4>Enunciado</h4>
+    <div>{{ conteudo.enunciado_html|safe }}</div>
+  </div>
+
+  <div class="mb-4">
+    <h4>Alternativas</h4>
+    <ul class="list-group">
+      {% for alt in conteudo.alternativas_html %}
+        <li class="list-group-item">{{ alt|safe }}</li>
+      {% empty %}
+        <li class="list-group-item text-muted">Nenhuma alternativa cadastrada.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="mb-4">
+    <h4>Justificativas</h4>
+    <ul class="list-group">
+      {% for jus in conteudo.justificativas_html %}
+        <li class="list-group-item">{{ jus|safe }}</li>
+      {% empty %}
+        <li class="list-group-item text-muted">Nenhuma justificativa cadastrada.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Form de comentário com Quill -->
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-2">
+      <h4>Considerações do Revisor</h4>
+      <!-- Container que o Quill vai transformar em editor -->
+      <div id="editor" style="background:#fff; min-height:150px;">
+        {{ comentario|safe }}
+      </div>
+      <!-- Aqui vai o HTML final do Quill, que será enviado -->
+      <input type="hidden" name="comentario" id="comentario">
+    </div>
+    <button class="btn btn-primary" type="submit">Salvar</button>
+    <a href="{% url 'painel_revisao' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+
+  <!-- Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  <script>
+    // Inicializa o Quill
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Escreva aqui suas considerações…'
+    });
+
+    // Ao submeter, copia o HTML do Quill para o input hidden
+    document.querySelector('form').onsubmit = function() {
+      document.querySelector('#comentario').value = quill.root.innerHTML;
+    };
+  </script>
+</body>
+</html>

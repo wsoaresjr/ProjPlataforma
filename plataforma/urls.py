@@ -19,6 +19,8 @@ from django.urls import path, include
 from usuarios.views import login_view, home_view
 from django.conf import settings
 from django.conf.urls.static import static
+from subprogramas import views
+
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -39,5 +41,7 @@ urlpatterns = [
     path('matrizes/', include('matrizes.urls')),
     path('demandas/', include('demandas.urls')),
     path('elaborar_itens/', include('elaborar_itens.urls')),
+    path('ajax/load-subprogramas/', views.load_subprogramas, name='ajax_load_subprogramas'),
+    path('revisao/', include('revisao.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

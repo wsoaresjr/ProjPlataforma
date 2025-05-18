@@ -37,3 +37,13 @@ def excluir_subprograma(request, pk):
         subprograma.delete()
         return redirect('listar_subprogramas')
     return render(request, 'subprogramas/excluir_subprograma.html', {'subprograma': subprograma})
+
+# subprogramas/views.py
+from django.http import JsonResponse
+from .models import Subprograma
+
+def load_subprogramas(request):
+    programa_id = request.GET.get('programa')
+    subprogramas = Subprograma.objects.filter(programa_id=programa_id).order_by('subprograma')
+    subprograma_list = [{'id': sp.pk, 'nome': sp.subprograma} for sp in subprogramas]
+    return JsonResponse({'subprogramas': subprograma_list})

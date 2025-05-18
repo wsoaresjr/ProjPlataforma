@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #444;
+        padding: 8px 10px;
+    }
+    th {
+        background: #f3f3f3;
+        text-align: left;
+    }
+    tr:nth-child(even) {background: #fafafa;}
+    .btn-revisar {
+        background: #0d6efd;
+        color: #fff;
+        border: none;
+        padding: 6px 18px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-revisar:hover {
+        background: #084298;
+    }
+</style>
+
+<h2>Itens Designados para Revisão</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Código do Item</th>
+            <th>Etapa</th>
+            <th>Descritor</th>
+            <th>Revisar até</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for itemrev in itens_revisor %}
+            {% if itemrev.item and itemrev.item.status_item == "Para Revisão" %}
+            <tr>
+                <td>{{ itemrev.item.cod_item }}</td>
+                <td>{{ itemrev.item.etapa }}</td>
+                <td>{{ itemrev.item.descritor }}</td>
+                <td>
+                    {% if itemrev.item.data_revisor %}
+                        {{ itemrev.item.data_revisor|date:"d/m/Y" }}
+                    {% else %}
+                        ---
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url 'revisar_item' itemrev.item.cod_item %}" method="get" style="display:inline;">
+                        <button type="submit" class="btn-revisar">Revisar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endif %}
+        {% empty %}
+            <tr>
+                <td colspan="5">Nenhum item designado para revisão.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

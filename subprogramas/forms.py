@@ -5,7 +5,7 @@ class SubprogramaForm(forms.ModelForm):
     class Meta:
         model = Subprograma
         fields = [
-            'cod_subprograma', 'subprograma', 'data_aplicacao', 
+            'cod_subprograma', 'subprograma', 'programa', 'data_aplicacao', 
             'disciplinas_avaliadas', 'qtd_itens', 'tipo_item', 'padrao_item', 'etapas_avaliadas'
         ]
         widgets = {

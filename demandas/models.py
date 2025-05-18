@@ -7,6 +7,7 @@ from tipo_item.models import TipoItem
 from descritores.models import Descritor
 from usuarios.models import Usuario
 from django.utils import timezone
+from django_quill.fields import QuillField
 
 class Demanda(models.Model):
     cod_demanda = models.CharField(max_length=10, primary_key=True)
@@ -31,6 +32,7 @@ class Item(models.Model):
     revisor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='revisor')
     data_revisor = models.DateField(null=True, blank=True)
     status_item = models.CharField(max_length=20, default="A Elaborar")
+    consideracoes_revisor = QuillField(null=True, blank=True)
 
     def __str__(self):
         return self.cod_item

@@ -40,5 +40,47 @@
             });
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $("#id_programa").change(function () {
+        var url = "{% url 'ajax_load_subprogramas' %}";  // URL da sua view AJAX
+        var programaId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'programa': programaId
+            },
+            success: function (data) {
+                $("#id_subprograma").html(""); // Limpa o campo
+                $.each(data.subprogramas, function (index, subprograma) {
+                    $("#id_subprograma").append(
+                        $("<option></option>").attr("value", subprograma.id).text(subprograma.nome)
+                    );
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $("#id_disciplina").change(function () {
+        var url = "{% url 'ajax_load_descritores' %}";
+        var disciplinaId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'disciplina': disciplinaId
+            },
+            success: function (data) {
+                $("#id_descritores").html(""); // Limpa o campo
+                $.each(data.descritores, function (index, descritor) {
+                    $("#id_descritores").append(
+                        $("<option></option>").attr("value", descritor.id).text(descritor.nome)
+                    );
+                });
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

@@ -37,3 +37,14 @@ def excluir_descritor(request, pk):
         descritor.delete()
         return redirect('listar_descritores')
     return render(request, 'descritores/excluir_descritor.html', {'descritor': descritor})
+
+
+# descritores/views.py
+from django.http import JsonResponse
+from .models import Descritor
+
+def load_descritores(request):
+    disciplina_id = request.GET.get('disciplina')
+    descritores = Descritor.objects.filter(disciplina_id=disciplina_id).order_by('descricao')
+    descritor_list = [{'id': d.pk, 'nome': d.descricao} for d in descritores]
+    return JsonResponse({'descritores': descritor_list})

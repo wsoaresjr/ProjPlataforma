@@ -5,10 +5,11 @@ from .forms import ElaboracaoItemForm
 import os
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from django.conf import settings
 
 # Caminho base para armazenamento dos arquivos XML
-XML_FOLDER = Path("C:/Users/Walter/Documents/plataforma/elaborar_itens/xml_storage")
-os.makedirs(XML_FOLDER, exist_ok=True)
+XML_FOLDER = Path(settings.BASE_DIR) / 'elaborar_itens' / 'xml_storage'
+XML_FOLDER.mkdir(parents=True, exist_ok=True)
 
 def listar_itens(request):
     # Verificar se o usuário está autenticado
